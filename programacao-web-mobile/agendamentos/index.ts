@@ -65,6 +65,10 @@ app.get('/', (req, res) => {
     res.render("home")
 })
 
+app.get('/consultar', (req, res) => {
+    res.render("consultar")
+})
+
 /*  Query for test
     ?nome=gabriel&endereco=rua&bairro=sp&estado=spdnv&cep=111&observacao=teste
 */
