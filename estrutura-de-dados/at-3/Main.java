@@ -9,7 +9,7 @@ public class Main {
     Pessoa ana = new Pessoa("Ana", 18);
 
     // 3.2 Criar uma fila vazia
-    Fila f = new Fila(); 
+    Fila f = new Fila();
 
     // 3.3. Testar se a fila está vazia
     System.out.println(f.vazia() ? "Fila vazia" : "Fila não vazia");
@@ -23,9 +23,10 @@ public class Main {
     // 3.5. Imprimir a Fila
     f.imprime();
 
-    // 3.6. Desenfileirar, ou seja, remover o primeiro elemento da fila, retornando-o.
+    // 3.6. Desenfileirar, ou seja, remover o primeiro elemento da fila,
+    // retornando-o.
     f.desenfileirar();
-    
+
     // 3.7. Imprimir a Fila
     f.imprime();
 

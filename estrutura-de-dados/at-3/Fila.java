@@ -1,10 +1,12 @@
 // 1. Implementar a classe Fila (versão encadeada).
 public class Fila {
+  // Classe nó
   private class No {
     Object item;
     No proximo;
   }
 
+  // Início e fim da fila
   private No inicio;
   private No fim;
 
@@ -35,7 +37,12 @@ public class Fila {
   }
 
   public int tamanho() {
-    // return this
+    int t = 0;
+    for (No l = this.inicio.proximo; l != null; l = l.proximo) {
+      t++;
+    }
+
+    return t;
   }
 
   public void imprime() {
