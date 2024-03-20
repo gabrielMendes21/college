@@ -61,7 +61,7 @@ public class Main {
         for (int i = 0; i < qttPlayers; i++) {
           if (classified < min) {
             classified++;
-          } else if (ponctuations[i] == ponctuations[2]) {
+          } else if (ponctuations[i] == ponctuations[min - 1]) {
             classified++;
           }
         }
