@@ -3,6 +3,7 @@
 * Acesse a pasta da atividade: `cd college/programacao-avancada/at-01`
 * Execute o comando `composer install`
 * Crie um banco MySQL chamado `aula_db`
+* Não se esqueca de remover o `;` da linha `extension=pdo_mysql` em seu php.ini
 * Crie a tabela `clientes`: 
    ```mysql
       CREATE TABLE `clientes` (
