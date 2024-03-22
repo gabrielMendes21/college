@@ -45,6 +45,10 @@ app.get('/consultar', (req, res) => {
     res.render("consultar")
 })
 
+app.get('/atualizar', (req, res) => {
+    res.render("atualizar")
+})
+
 // Middleware for insert data into database
 // function inserirDados(req, res, next) {
 //     try {
