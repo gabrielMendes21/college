@@ -98,53 +98,80 @@
             $cliente->setEstado($data->estado);
 
             $repository = new ClienteRepository($cliente);
-
-            // Verificando se foi fornecido um ID na requisição
-            if(isset($data->cliente_id)){
-                echo "HAHAHA";
-                $cliente->setCliente_id($data->cliente_id);
+            
+            if(isset($_GET['id'])){
+                $cliente->setCliente_id($_GET['id']);
+    
+                // Verificando se o cliente com o ID fornecido existe
+                if($repository->getById()){
+                    // Atualizando os dados do cliente
+                    $success = $repository->update();
+                    
+                    // Retornando a resposta adequada
+                    if ($success) {
+                        http_response_code(200); // OK
+                        echo json_encode(["message" => "Dados atualizados com sucesso."]);
+                    } else {
+                        http_response_code(500); // Internal Server Error
+                        echo json_encode(["message" => "Falha ao atualizar dados."]);
+                    }
+                } else { 
+                    http_response_code(404); // Not Found
+                    echo json_encode(["message" => "Falha ao atualizar, nenhum dado encontrado."]);
+                }
+            } else { 
+                // Caso não tenha sido fornecido um ID, cria um novo cliente
+                $success = $repository->insert();
+                
+                // Retornando a resposta adequada
+                if ($success) {
+                    http_response_code(200); // OK
+                    echo json_encode(["message" => "Dados inseridos com sucesso."]);
+                } else {
+                    http_response_code(500); // Internal Server Error
+                    echo json_encode(["message" => "Falha ao inserir dados."]);
+                }
             }
+
             break;
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input")); 
 
-            // Verificando se os dados são válidos
-            if (!isset($data)) {
-                http_response_code(400); // Bad Request
-                echo json_encode(["error" => "Dados de entrada inválidos."]);
-                break;
-            }
+            if (isset($_GET['id'])) {
+                $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-            // Obtendo o ID do cliente a ser excluído
-            $id = $data->id;
+                if ($id) {
+                    // Criando um novo cliente
+                    $cliente = new Cliente();
+                    $cliente->setCliente_id($id);
 
-            // Criando um novo cliente
-            $cliente = new Cliente();
-            $cliente->setCliente_id($id);
+                    $repository = new ClienteRepository($cliente);
 
-            $repository = new ClienteRepository($cliente);
+                    $result = $repository->getById($cliente);
 
-            $result = $repository->getById($cliente);
+                    // Verificando se o cliente existe
+                    if(!$result){
+                        http_response_code(404); // Not Found
+                        echo json_encode(["message" => "Nenhum dado encontrado."]);
+                    }
+                    
+                    // Removendo o cliente
+                    $success = $repository->delete($cliente);
 
-            // Verificando se o cliente existe
-            if(!$result){
-                http_response_code(404); // Not Found
-                echo json_encode(["message" => "Nenhum dado encontrado."]);
-            }
-            
-            // Removendo o cliente
-            $success = $repository->delete($cliente);
-
-            // Retornando a resposta adequada
-            if ($success) {
-                http_response_code(200);
-                echo json_encode(["message" => "Dados apagados com sucesso."]);
-            } else {
-                http_response_code(500);
-                echo json_encode(["message" => "Falha ao apagar dados."]);
+                    // Retornando a resposta adequada
+                    if ($success) {
+                        http_response_code(200);
+                        echo json_encode(["message" => "Dados apagados com sucesso."]);
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(["message" => "Falha ao apagar dados."]);
+                    }
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'O valor do ID fornecido não é um inteiro válido.']);
+                    exit;
+                }
             }
             break;
     }
-
-    
 ?>
