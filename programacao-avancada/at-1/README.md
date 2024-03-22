@@ -18,7 +18,7 @@
 * Acesse a pasta App: `cd App`
 * Execute o servidor: `php -S localhost:3000`
 * Agora é só testar os métodos HTTP:
-    * Exemplo de JSON para a criação de um cliente:
+    * Exemplo de JSON para a criação de um cliente (POST):
     ```json
       {
         "nome": "Gabriel Mendes",
