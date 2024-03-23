@@ -1,7 +1,7 @@
 // import connect from "./db_connection";
 // import { DataTypes } from "sequelize";
+import express from 'express';
 import { engine } from "express-handlebars";
-import express from 'express'
 
 // Create application with express
 const app = express();
@@ -38,7 +38,11 @@ app.set("view engine", "handlebars");
 // agendamentos.sync();
 
 app.get('/', (req, res) => {
-    res.render("home")
+    res.render("cadastrar")
+})
+
+app.get('/cadastrar', (req, res) => {
+    res.render("cadastrar")
 })
 
 app.get('/consultar', (req, res) => {
