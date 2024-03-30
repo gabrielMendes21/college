@@ -1,9 +1,3 @@
-SELECT * FROM clientes
-WHERE cliente_id IN (
-    SELECT cliente_id FROM vendas
-    WHERE valor_venda > AVG(valor_venda)
-);
-
 -- 1
 SELECT * FROM produtos
 WHERE NOT EXISTS (
