@@ -3,7 +3,6 @@ namespace App\Src\loginComAbstract;
 
 class Professor extends Usuario {
   public function autenticar(string $login, string $senha): bool {
-
     return true;
   }
 

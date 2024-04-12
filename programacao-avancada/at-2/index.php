@@ -1,7 +1,16 @@
 <?php
 require 'vendor/autoload.php';
-use App\Src\loginComAbstract\Login;
-// use App\Src\loginComInterface\Login;
+use App\Src\loginComAbstract\UsuarioFactory;
+// use App\Src\loginComInterface\UsuarioFactory;
 
-$login = new Login();
-$login->executar('eu','123');
+function login($perfil, $login, $senha) {
+    $usuario = UsuarioFactory::criar($perfil);
+    
+    if ($usuario->autenticar($login, $senha)) {
+        $autorizacoes = $usuario->autorizar();
+        echo "Bem-vindo, $login! Você tem acesso às seguintes funcionalidades: " . implode(', ', $autorizacoes);
+    } else {
+        echo "Login ou senha incorretos";
+    }
+}
+login("administrador", "Gabriel", "123456");
