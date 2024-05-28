@@ -1,0 +1,66 @@
+<div class="container text-center">
+    <div class="row px-4 py-3">
+        <div class="col bg-white">
+            <p class="text-start fs-5">Cadastrar - Agendamento de Potenciais Clientes</p>
+            <p class="text-start fs-6">Sistema Utilizado para agendamento de serviços.</p>
+            <p>
+                <form method="POST">
+                    <input type="text" hidden name="id" value="{{id}}">
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Nome:</label>
+                        <input type="name" name="nome" class="form-control" id="nome" value="{{nome}}" required>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Telefone:</label>
+                        <input type="text" name="telefone" class="form-control" id="telefone" value="{{telefone}}" placeholder="(00)00000-0000" required>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Origem:</label>
+                        <select name="origem" class="form-select" aria-label="Default select example" required>
+                            <option value="celular" selected>Celular</option>
+                            <option value="whatsapp">Whatsapp</option>
+                            <option value="telefone_fixo">Telefone Fixo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Data do Contato:</label>
+                        <input type="date" name="data_contato" class="form-control" id="data_contato" value="{{data_contato}}" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label">Observação:</label>
+                        <textarea name="observacao" class="form-control" placeholder="" id="observacao" style="height: 100px">{{observacao}}</textarea>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </div>
+                </form>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.querySelector('form');
+
+    {{!-- Handle submit --}}
+    form.addEventListener("submit", (event) => {
+        {{!-- Avoid page reload --}}
+        event.preventDefault();
+
+        {{!-- Create an object from the form fields --}}
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        const id = data.id;
+
+        delete data.id;
+
+        {{!-- Send post request --}}
+        fetch(`http://localhost:3000/atualizar/${id}`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(response => response.json()).then(data => location.replace('/consulta'))
+    })
+</script>
