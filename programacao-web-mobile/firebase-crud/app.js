@@ -31,8 +31,10 @@ app.post("/cadastrar", async (req, res) => {
             data_contato,
             observacao,
         } = req.body;
+
+        const id = crypto.randomUUID();
     
-        const docRef = db.collection('agendamentos').doc('alovelace');
+        const docRef = db.collection('agendamentos').doc(id);
     
         await docRef.set({
             nome,
