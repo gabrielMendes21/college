@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub User</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font: 16px Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input {
+            display: inline-block;
+            margin: 1rem 0 2rem;
+            padding: .2rem .5rem;
+        }
+
+        button {
+            padding: .5rem;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub user</h1>
+    <input type="text" placeholder="Digite o seu nickname do GitHub">
+    <button type="button">Buscar</button>
+    
+    <script>
+        document.querySelector('button').addEventListener('click', () => {
+            const user = document.querySelector('input').value;
+            fetch(`https://api.github.com/users/${user}`)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err));
+        })
+    </script>
+</body>
+</html>

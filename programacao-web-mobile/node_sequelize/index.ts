@@ -1,65 +1,69 @@
-import connect from "./db_connection";
+import express from 'express';
 import { DataTypes } from "sequelize";
-import express, { NextFunction, Request, Response } from 'express';
+// import user from './User';
+import db from "./db_connection";
 
 // Create application with express
 const app = express();
 
-// Connect to databse
-const db = connect();
+const user = db.define("user", {
+    name: {
+        type: DataTypes.STRING
+    },
+    age: {
+        type: DataTypes.INTEGER
+    }
+});
 
-// Create agendamentos table
-const agendamentos = db.define("agendamentos", {
-    nome: {
-        type: DataTypes.STRING
-    },
-    endereco: {
-        type: DataTypes.STRING,
-    },
-    bairro: {
-        type: DataTypes.STRING
-    },
-    estado: {
-        type: DataTypes.STRING
-    },
-    cep: {
-        type: DataTypes.STRING
-    },
-    observacao: {
-        type: DataTypes.STRING
+user.sync();
+
+app.post('/cadastrar', async (req, res) => {
+    try {
+        await user.create({name: "Gabriel Mendes", age: 18});
+        res.json("Usuário criado");
+    } catch(e) {
+        res.json(e);
     }
 })
 
-agendamentos.sync();
-
-// Middleware for insert data into database
-function inserirDados(req: Request, res: Response, next: NextFunction) {
+app.get('/users', async (req, res) => {
     try {
-        agendamentos.create({
-            nome: req.query.nome,
-            endereco: req.query.endereco,
-            bairro: req.query.bairro,
-            cep: req.query.cep,
-            cidade: req.query.cidade,
-            estado: req.query.estado,
-            observacao: req.query.observacao
-        });
-
-        res.json("Dados cadastrados");
-    } catch(err) {
-        res.status(500).json({
-            msg: "Erro ao cadastrar os dados",
-            err
-        })
+        const users = await user.findAll();
+        res.json(users);
+    } catch(e) {
+        res.json(e);
     }
+});
 
-    next()
-}
+app.put('/update', async (req, res) => {
+    try {
+        await user.update({
+            name: "Jude Hoffman",
+            age: 55
+        }, {
+            where: {
+                id: 1
+            }
+        })
 
-/*  Query for test
-    ?nome=gabriel&endereco=rua&bairro=sp&estado=spdnv&cep=111&observacao=teste
-*/
-app.get('/cadastrar', inserirDados)
+        res.json("usuário atualizado");
+    } catch(e) {
+        res.json(e);
+    }
+})
 
+app.delete('/delete', async (req, res) => {
+    try {
+        await user.destroy({
+            where: {
+                id: 1
+            }
+        })
+
+        res.json("Usuário removido");
+    } catch(e) {
+        res.json(e);
+    }
+})
 
 app.listen(3000);
